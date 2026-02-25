@@ -4,11 +4,11 @@
 
 ## Checklist
 
-- [ ] Obsidian vault with `Dashboard.md` and `Company_Handbook.md`
-- [ ] One working Watcher script (Gmail OR file system monitoring)
-- [ ] Claude Code successfully reading from and writing to the vault
-- [ ] Basic folder structure: `/Inbox`, `/Needs_Action`, `/Done`
-- [ ] All AI functionality implemented as [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+- [x] Obsidian vault with `Dashboard.md` and `Company_Handbook.md`
+- [x] One working Watcher script (Gmail OR file system monitoring)
+- [x] Claude Code successfully reading from and writing to the vault
+- [x] Basic folder structure: `/Inbox`, `/Needs_Action`, `/Done`
+- [x] All AI functionality implemented as [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 
 ## Key Deliverables
 
