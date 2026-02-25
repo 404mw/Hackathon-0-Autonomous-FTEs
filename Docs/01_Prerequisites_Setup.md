@@ -32,11 +32,11 @@ This hackathon assumes intermediate technical proficiency:
 
 ## Pre-Hackathon Checklist
 
-- [ ] Install all required software listed above
-- [ ] Create a new Obsidian vault named "AI_Employee_Vault"
-- [ ] Verify Claude Code works by running: `claude --version`
-- [ ] Set up a UV Python project
-- [ ] Join the Wednesday Research Meeting Zoom link
+- [x] Install all required software listed above
+- [x] Create a new Obsidian vault named "AI_Employee_Vault"
+- [x] Verify Claude Code works by running: `claude --version`
+- [x] Set up a UV Python project
+- [x] Join the Wednesday Research Meeting Zoom link
 
 ## Research & Showcase Meeting (Every Wednesday)
 

@@ -4,4 +4,11 @@ version = "0.1.0"
 description = "Personal AI Employee — autonomous, local-first Digital FTE"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "watchdog>=6.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.2",
+]

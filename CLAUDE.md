@@ -139,6 +139,24 @@ This is a **hard requirement across every tier** (Bronze through Platinum).
 - Prefer skills over ad-hoc prompts — if Claude does it more than once, it should be a skill
 - Reference: `Docs/16_Learning_Resources.md` for Agent Skills tutorials
 
+## Implementation Plans
+
+Before starting any non-trivial implementation, save a plan to `Implementation_Plans/<Tier>/` in the vault.
+
+```
+Implementation_Plans/
+├── Bronze/
+│   └── 01_folder_structure_and_watcher.md
+├── Silver/
+├── Gold/
+└── Platinum/
+```
+
+- Number plans sequentially: `01_`, `02_`, etc.
+- Use descriptive slugs: `01_folder_structure_and_watcher.md`
+- Plans document what will be built, the steps, and files to create/modify
+- Save the plan **before** starting implementation
+
 ## Rules
 
 1. Never store secrets in markdown files or commit them to git.

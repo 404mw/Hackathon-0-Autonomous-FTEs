@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
+.ruff_cache/
 
 # Virtual environments
 .venv
@@ -17,3 +18,9 @@ wheels/
 
 # Claude Code — local settings
 .claude/settings.local.json
+
+# Watcher state files
+Scripts/.fs_watcher_state.json
+
+# Watcher log files
+Logs/watcher.log
