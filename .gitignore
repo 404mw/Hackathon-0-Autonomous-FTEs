@@ -11,3 +11,9 @@ wheels/
 
 # Secrets
 .env
+
+# Obsidian — user-specific workspace state
+.obsidian/workspace.json
+
+# Claude Code — local settings
+.claude/settings.local.json
