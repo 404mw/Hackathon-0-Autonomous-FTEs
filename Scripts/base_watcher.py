@@ -11,6 +11,10 @@ import time
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class BaseWatcher(ABC):
     """Abstract base class for all vault watchers.
