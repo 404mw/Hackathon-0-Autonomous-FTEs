@@ -79,6 +79,47 @@ uv add watchdog ruff
 - Confirm logging output works
 - Confirm DRY_RUN mode prevents file creation when enabled
 
+## Issues & Resolutions
+
+### Issue 1 — Vault data files must not be committed to git
+
+**Symptom:** After the Gmail watcher ran live (`DRY_RUN=false`), real email files, plan files, approval requests, and audit logs appeared as untracked changes — at risk of being committed to the public repository.
+
+**Cause:** The initial `.gitignore` only excluded secrets (`.env`, credentials) and Python artefacts. No rules existed for the vault's data directories, so all generated content would have been committed.
+
+**Decision:** The vault separates **structure** (committed) from **data** (never committed). Only `.gitkeep` placeholders are tracked so collaborators get the full folder skeleton without any private content.
+
+**Fix:** Added a `# Vault data` section to `.gitignore` covering every data-producing directory:
+
+```gitignore
+# Vault data — keep folder structure (.gitkeep) but never commit content
+Needs_Action/*.md
+Plans/*.md
+Pending_Approval/*.md
+Approved/*.md
+Rejected/*.md
+Done/*.md
+Inbox/*
+!Inbox/.gitkeep
+Briefings/*.md
+Logs/*.json
+Invoices/*.md
+Accounting/*
+!Accounting/.gitkeep
+In_Progress/**
+!In_Progress/.gitkeep
+```
+
+Also added watcher state files:
+```gitignore
+Scripts/.gmail_watcher_state.json
+Scripts/Logs/
+```
+
+**Rule added to CLAUDE.md:** "Document bugs and encountered issues in the plan file as they are encountered."
+
+---
+
 ## Files to Create/Modify
 
 | File | Action |

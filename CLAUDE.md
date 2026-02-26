@@ -156,6 +156,7 @@ Implementation_Plans/
 - Use descriptive slugs: `01_folder_structure_and_watcher.md`
 - Plans document what will be built, the steps, and files to create/modify
 - Save the plan **before** starting implementation
+- **Document bugs and issues in the plan file as they are encountered.** Add an `## Issues & Resolutions` section at the bottom of the relevant plan with: symptom, root cause, and fix applied. This keeps a permanent record alongside the work it relates to.
 
 ## Rules
 

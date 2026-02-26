@@ -12,6 +12,8 @@ wheels/
 
 # Secrets
 .env
+Scripts/credentials.json
+Scripts/token.json
 
 # Obsidian — user-specific workspace state
 .obsidian/workspace.json
@@ -21,6 +23,25 @@ wheels/
 
 # Watcher state files
 Scripts/.fs_watcher_state.json
+Scripts/.gmail_watcher_state.json
+Scripts/Logs/
 
 # Watcher log files
 Logs/watcher.log
+
+# Vault data — keep folder structure (.gitkeep) but never commit content
+Needs_Action/*.md
+Plans/*.md
+Pending_Approval/*.md
+Approved/*.md
+Rejected/*.md
+Done/*.md
+Inbox/*
+!Inbox/.gitkeep
+Briefings/*.md
+Logs/*.json
+Invoices/*.md
+Accounting/*
+!Accounting/.gitkeep
+In_Progress/**
+!In_Progress/.gitkeep
