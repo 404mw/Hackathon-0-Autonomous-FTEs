@@ -1,8 +1,11 @@
 """One-time Gmail OAuth 2.0 authentication flow.
 
-Run this script once to authorise the AI Employee to access your Gmail inbox.
-It opens a browser window for the Google consent screen and writes a token
-file that ``gmail_watcher.py`` reuses on every subsequent run.
+Run this script once to authorise the AI Employee to access your Gmail inbox
+and send emails. It opens a browser window for the Google consent screen and
+writes a token file reused by ``gmail_watcher.py`` and the email-send MCP server.
+
+If you are updating an existing token to add the gmail.send scope, delete
+``Scripts/token.json`` first so Google re-prompts for the updated consent.
 
 Usage:
     uv run python Scripts/gmail_auth.py
@@ -22,7 +25,13 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 load_dotenv()
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    # gmail.send is required by the email-send MCP server.
+    # After adding this scope, delete Scripts/token.json and re-run this script
+    # to re-authorize — Google only grants new scopes on a fresh consent.
+    "https://www.googleapis.com/auth/gmail.send",
+]
 
 logging.basicConfig(
     level=logging.INFO,
@@ -66,11 +75,12 @@ def run_auth_flow(credentials_path: Path, token_path: Path) -> None:
 
 def main() -> None:
     """Entry point: read paths from env and run the auth flow."""
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).resolve().parent
+    vault_root = script_dir.parent  # Scripts/ -> vault root
 
     def _resolve(raw: str | Path) -> Path:
         p = Path(raw)
-        return p if p.is_absolute() else script_dir / p
+        return p if p.is_absolute() else vault_root / p
 
     credentials_path = _resolve(
         os.environ.get("GMAIL_CREDENTIALS_PATH", script_dir / "credentials.json")

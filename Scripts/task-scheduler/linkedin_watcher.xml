@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Windows Task Scheduler — LinkedIn Watcher
+  ==========================================
+  Starts the LinkedIn message watcher automatically on user logon.
+
+  Import instructions (run as Administrator):
+    schtasks /Create /XML "Scripts\task-scheduler\linkedin_watcher.xml" ^
+             /TN "AI-Employee\linkedin-watcher" /F
+
+  Before importing:
+    1. Replace YOUR-PC\your-username with your actual Windows username.
+    2. Ensure 'uv' is on your system PATH.
+    3. Run the watcher once manually first to log in to LinkedIn via browser.
+    4. Set DRY_RUN=false in .env once tested.
+
+  Note: LinkedIn watcher uses a persistent Playwright session in .linkedin_session/.
+  After the initial browser login, subsequent runs are headless.
+-->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+
+  <RegistrationInfo>
+    <Date>2026-02-28T00:00:00</Date>
+    <Author>AI Employee Vault</Author>
+    <Description>Scrapes LinkedIn messaging for unread messages and creates action files in Needs_Action/.</Description>
+  </RegistrationInfo>
+
+  <Triggers>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+      <Delay>PT1M30S</Delay>
+    </LogonTrigger>
+  </Triggers>
+
+  <Principals>
+    <Principal id="Author">
+      <!-- Replace with your Windows username (domain\user or just user) -->
+      <UserId>YOUR-PC\your-username</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+    <Priority>7</Priority>
+    <RestartOnFailure>
+      <Interval>PT2M</Interval>
+      <Count>3</Count>
+    </RestartOnFailure>
+  </Settings>
+
+  <Actions Context="Author">
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c uv --directory "G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault" run python Scripts\linkedin_watcher.py</Arguments>
+      <WorkingDirectory>G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault</WorkingDirectory>
+    </Exec>
+  </Actions>
+
+</Task>

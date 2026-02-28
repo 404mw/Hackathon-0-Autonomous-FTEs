@@ -5,15 +5,28 @@ description = "Personal AI Employee — autonomous, local-first Digital FTE"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "discord-py>=2.3",
     "google-api-python-client>=2.190.0",
     "google-auth>=2.48.0",
     "google-auth-httplib2>=0.3.0",
     "google-auth-oauthlib>=1.2.4",
+    "mcp>=1.26.0",
+    "playwright>=1.44",
     "python-dotenv>=1.2.1",
+    "requests>=2.32",
     "watchdog>=6.0.0",
 ]
 
 [dependency-groups]
 dev = [
     "ruff>=0.15.2",
+    "taskipy>=1.14.1",
 ]
+
+[tool.taskipy.tasks]
+start     = "pm2 start Scripts/pm2.config.js --env production"
+start-dry = "pm2 start Scripts/pm2.config.js"
+stop      = "pm2 stop all"
+restart   = "pm2 restart all"
+status    = "pm2 status"
+logs      = "pm2 logs"

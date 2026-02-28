@@ -14,6 +14,7 @@ wheels/
 .env
 Scripts/credentials.json
 Scripts/token.json
+Scripts/.linkedin_token.json
 
 # Obsidian — user-specific workspace state
 .obsidian/workspace.json
@@ -24,10 +25,17 @@ Scripts/token.json
 # Watcher state files
 Scripts/.fs_watcher_state.json
 Scripts/.gmail_watcher_state.json
+Scripts/.whatsapp_watcher_state.json
+Scripts/.discord_watcher_state.json
+Scripts/.linkedin_watcher_state.json
 Scripts/Logs/
 
-# Watcher log files
-Logs/watcher.log
+# Playwright browser sessions (contain auth cookies — never commit)
+Scripts/.whatsapp_session/
+Scripts/.linkedin_session/
+
+# Watcher and PM2 log files
+Logs/*.log
 
 # Vault data — keep folder structure (.gitkeep) but never commit content
 Needs_Action/*.md

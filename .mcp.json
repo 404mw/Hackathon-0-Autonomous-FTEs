@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "email-send": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "G:/Hackathons/GIAIC_Hackathons/AI_Employee_Vault",
+        "run",
+        "python",
+        "Scripts/mcp_servers/email_send/server.py"
+      ],
+      "env": {}
+    }
+  }
+}

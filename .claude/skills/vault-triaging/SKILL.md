@@ -1,10 +1,6 @@
 ---
 name: vault-triaging
-description: >
-  Reads, classifies, and routes items from Needs_Action/ into Plans/.
-  Use when new files appear in Needs_Action/ from any watcher (Gmail,
-  WhatsApp, filesystem) or manual drops. Determines item type, priority,
-  and required actions, then creates a corresponding Plan file.
+description: Reads, classifies, and routes all Needs_Action/ items into Plans/. Delegates to platform-specific skills (email-triaging, whatsapp-triaging, discord-triaging, file-processing) for triage.
 allowed-tools: Read, Write, Glob, Grep
 ---
 

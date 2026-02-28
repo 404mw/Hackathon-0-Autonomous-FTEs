@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Windows Task Scheduler — LinkedIn Post Schedule
+  ================================================
+  Runs linkedin_post_trigger.py on Mon/Wed/Fri at 09:00 to create a trigger
+  file in Needs_Action/, prompting the linkedin-posting skill chain.
+
+  Import instructions (run as Administrator):
+    schtasks /Create /XML "Scripts\task-scheduler\linkedin_post_schedule.xml" ^
+             /TN "AI-Employee\linkedin-post-schedule" /F
+
+  Before importing:
+    1. Replace YOUR-PC\your-username with your actual Windows username.
+    2. Ensure 'uv' is on your system PATH.
+    3. Adjust the StartBoundary date if needed (must be a future date).
+    4. Set DRY_RUN=false in .env once ready to generate real trigger files.
+
+  Workflow after trigger fires:
+    1. linkedin_post_trigger.py creates LINKEDIN_POST_TRIGGER_<date>.md in Needs_Action/
+    2. Open Claude Code and run /vault-triaging → /linkedin-posting
+    3. Review the draft in Pending_Approval/ and move to Approved/
+    4. The orchestrator (or approval-executing skill) publishes the post
+-->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+
+  <RegistrationInfo>
+    <Date>2026-02-28T00:00:00</Date>
+    <Author>AI Employee Vault</Author>
+    <Description>Creates a LinkedIn post trigger file in Needs_Action/ every Mon/Wed/Fri at 09:00.</Description>
+  </RegistrationInfo>
+
+  <Triggers>
+    <CalendarTrigger>
+      <!-- Adjust start date to the next occurrence of Mon/Wed/Fri -->
+      <StartBoundary>2026-03-02T09:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByWeek>
+        <WeeksInterval>1</WeeksInterval>
+        <DaysOfWeek>
+          <Monday />
+          <Wednesday />
+          <Friday />
+        </DaysOfWeek>
+      </ScheduleByWeek>
+    </CalendarTrigger>
+  </Triggers>
+
+  <Principals>
+    <Principal id="Author">
+      <!-- Replace with your Windows username (domain\user or just user) -->
+      <UserId>YOUR-PC\your-username</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <!-- Short execution limit — trigger script runs in seconds -->
+    <ExecutionTimeLimit>PT5M</ExecutionTimeLimit>
+    <Priority>7</Priority>
+    <RestartOnFailure>
+      <Interval>PT5M</Interval>
+      <Count>2</Count>
+    </RestartOnFailure>
+  </Settings>
+
+  <Actions Context="Author">
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c uv --directory "G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault" run python Scripts\linkedin_post_trigger.py</Arguments>
+      <WorkingDirectory>G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault</WorkingDirectory>
+    </Exec>
+  </Actions>
+
+</Task>
