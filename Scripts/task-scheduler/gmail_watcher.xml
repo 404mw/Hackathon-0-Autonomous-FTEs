@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Windows Task Scheduler — Gmail Watcher
+  =======================================
+  Starts the Gmail watcher automatically on user logon.
+
+  Import instructions (run as Administrator):
+    schtasks /Create /XML "Scripts\task-scheduler\gmail_watcher.xml" ^
+             /TN "AI-Employee\gmail-watcher" /F
+
+  Before importing:
+    1. Replace YOUR-PC\your-username with your actual Windows username.
+    2. Ensure 'uv' is on your system PATH (check: uv --version in a new cmd).
+    3. Adjust DRY_RUN to "false" once you have tested the watcher.
+-->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+
+  <RegistrationInfo>
+    <Date>2026-02-28T00:00:00</Date>
+    <Author>AI Employee Vault</Author>
+    <Description>Polls Gmail for unread important emails and creates action files in Needs_Action/.</Description>
+  </RegistrationInfo>
+
+  <Triggers>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+      <!-- Start 60 seconds after logon to let network settle -->
+      <Delay>PT1M</Delay>
+    </LogonTrigger>
+  </Triggers>
+
+  <Principals>
+    <Principal id="Author">
+      <!-- Replace with your Windows username (domain\user or just user) -->
+      <UserId>YOUR-PC\your-username</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <!-- PT0S = no execution time limit (runs until stopped) -->
+    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+    <Priority>7</Priority>
+    <RestartOnFailure>
+      <Interval>PT1M</Interval>
+      <Count>3</Count>
+    </RestartOnFailure>
+  </Settings>
+
+  <Actions Context="Author">
+    <Exec>
+      <Command>cmd.exe</Command>
+      <Arguments>/c uv --directory "G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault" run python Scripts\gmail_watcher.py</Arguments>
+      <WorkingDirectory>G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault</WorkingDirectory>
+    </Exec>
+  </Actions>
+
+</Task>

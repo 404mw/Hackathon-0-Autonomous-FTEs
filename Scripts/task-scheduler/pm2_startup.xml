@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Windows Task Scheduler — PM2 Auto-Start (hidden)
+  =================================================
+  Runs start-hidden.vbs at user logon so all vault watchers start silently
+  with no CMD windows.
+
+  Import instructions (run as Administrator):
+    schtasks /Create /XML "Scripts\task-scheduler\pm2_startup.xml" ^
+             /TN "AI-Employee\pm2-startup" /F
+
+  Before importing:
+    1. Replace YOUR-PC\your-username with your actual Windows username.
+    2. Ensure PM2 is installed globally: npm install -g pm2
+    3. Run 'pm2 save' once to persist the process list dump file.
+
+  To stop all processes:
+    Open any terminal and run: pm2 stop all
+-->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+
+  <RegistrationInfo>
+    <Date>2026-02-28T00:00:00</Date>
+    <Author>AI Employee Vault</Author>
+    <Description>Starts PM2 and all vault watchers silently at logon with no console windows.</Description>
+  </RegistrationInfo>
+
+  <Triggers>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+      <Delay>PT30S</Delay>
+    </LogonTrigger>
+  </Triggers>
+
+  <Principals>
+    <Principal id="Author">
+      <!-- Replace with your Windows username (domain\user or just user) -->
+      <UserId>YOUR-PC\your-username</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <!-- VBScript exits immediately after fire-and-forget; short limit is fine -->
+    <ExecutionTimeLimit>PT1M</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+
+  <Actions Context="Author">
+    <Exec>
+      <Command>wscript.exe</Command>
+      <Arguments>"G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault\Scripts\start-hidden.vbs"</Arguments>
+      <WorkingDirectory>G:\Hackathons\GIAIC_Hackathons\AI_Employee_Vault</WorkingDirectory>
+    </Exec>
+  </Actions>
+
+</Task>
